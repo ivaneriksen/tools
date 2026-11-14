@@ -68,39 +68,56 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
-.loading-progress {
+.loading-container {
     position: absolute;
-    display: block;
-    width: 8rem;
-    height: 8rem;
     inset: 20vh 0 auto 0;
-    margin: 0 auto 0 auto;
+    width: 16rem;
+    height: 16rem;
+    margin: 0 auto;
+}
+
+.loading-progress {
+    width: 100%;
+    height: 100%;
 }
 
     .loading-progress circle {
-        fill: none;
-        stroke: #e0e0e0;
-        stroke-width: 0.6rem;
+        fill: #1c1f22;
+        stroke: none;
         transform-origin: 50% 50%;
         transform: rotate(-90deg);
     }
 
         .loading-progress circle:last-child {
-            stroke: #1b6ec2;
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 0.2rem;
             stroke-dasharray: calc(3.141 * var(--blazor-load-percentage, 0%) * 0.8), 500%;
             transition: stroke-dasharray 0.05s ease-in-out;
         }
 
-.loading-progress-text {
+.loading-logo {
     position: absolute;
-    text-align: center;
-    font-weight: bold;
-    inset: calc(20vh + 3.25rem) 0 auto 0.2rem;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: color-mix(in srgb, var(--accent) var(--blazor-load-percentage, 0%), #1c1f22);
 }
 
-    .loading-progress-text:after {
-        content: var(--blazor-load-percentage-text, "Loading");
-    }
+.loading-logo-main {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.loading-logo-sub {
+    font-size: 1.25rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-top: 0.5rem;
+}
 
 code {
     color: #c02d76;
