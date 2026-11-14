@@ -1,4 +1,5 @@
 ﻿@page "/base-converter"
+@inject IJSRuntime JS
 
 <PageTitle>Base Converter</PageTitle>
 
@@ -34,14 +35,25 @@
                         <div class="col-5 offset-2">
                             <button type="submit" class="btn btn-outline-primary w-100">Convert</button>
                         </div>
+                        <div class="col-2 offset-3">
+                            <button type="button" class="btn btn-outline-primary w-100" @onclick="Swap" aria-label="Swap bases">
+                                <i class="bi bi-arrow-down-up"></i>
+                            </button>
+                        </div>
                     </div>
+                    
 
                     <div class="row g-2 align-items-center">
                         <div class="col-2">
                             <label class="col-form-label">Result:</label>
                         </div>
                         <div class="col-5">
-                            <input class="form-control" value="@result" readonly />
+                            <div class="input-group">
+                                <input class="form-control" value="@result" readonly />
+                                <button type="button" class="btn btn-outline-primary" @onclick="CopyResult" aria-label="Copy result">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="col-3">
                             <label class="col-form-label">To base:</label>
@@ -93,6 +105,27 @@
         {
             result = string.Empty;
             errorMessage = "An unexpected error occurred: " + ex.Message;
+        }
+    }
+
+    // Swap the from and to bases, and if there is a result, use it as the new input and convert again
+    private void Swap()
+    {
+        (fromBase, toBase) = (toBase, fromBase);
+        if (!string.IsNullOrWhiteSpace(result))
+        {
+            input = result;
+
+            DoConvert();
+        }
+    }
+
+    // Copy the result to the clipboard
+    private async Task CopyResult()
+    {
+        if (!string.IsNullOrEmpty(result))
+        {
+            await JS.InvokeVoidAsync("navigator.clipboard.writeText", result);
         }
     }
 }
