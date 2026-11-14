@@ -33,13 +33,13 @@
                 string[] groups = parts[0].Split(':');
                 if (groups.Length != 8)
                 {
-                    throw new ArgumentException($"Invalid IPv6 address: expected 8 groups, found {groups.Length}.");
+                    throw new ArgumentException($"Invalid IPv6 address.");
                 }
                 for (int i = 0; i < groups.Length; i++)
                 {
                     if (!IsValidGroup(groups[i]))
                     {
-                        throw new ArgumentException($"Invalid IPv6 address: invalid group found at index {i}.");
+                        throw new ArgumentException($"Invalid IPv6 address.");
                     }
                 }
 
@@ -63,7 +63,7 @@
                     {
                         if (!IsValidGroup(group))
                         {
-                            throw new ArgumentException($"Invalid IPv6 address: invalid group found in part '{part}'.");
+                            throw new ArgumentException($"Invalid IPv6 address.");
                         }
                     }
                 }
