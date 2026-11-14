@@ -1,6 +1,6 @@
 ﻿namespace BaseConverter.Core
 {
-    public readonly record struct Ipv6Result(string FullAddress, string ShortAddress);
+    public readonly record struct Ipv6Result(string FullAddress, string TrimmedAddress, string ShortAddress);
 
     // Format an IPv6 address string and return the full and short representations, without the use of the System.Net.IPAddress class.
     public static class Ipv6Formatter
@@ -20,7 +20,7 @@
             // check if valid ipv6 address
             ushort[] groups = ParseGroups(input);
 
-            return new Ipv6Result(FullAddress: ToFullForm(groups), ShortAddress: ToShortForm(groups));
+            return new Ipv6Result(FullAddress: ToFullForm(groups), TrimmedAddress: ToTrimmedForm(groups), ShortAddress: ToShortForm(groups));
         }
 
         private static ushort[] ParseGroups(string input)
@@ -142,10 +142,16 @@
             return left + "::" + right;
         }
 
+        // return the 8 groups as hex, separated by colons, with no leading zeros
+        private static string ToTrimmedForm(ushort[] groups)
+        {
+            return JoinGroups(groups, "x");
+        }
+
         // return the 8 groups as 4-digit hex, separated by colons
         private static string ToFullForm(ushort[] groups)
         {
-            return string.Join(":", groups.Select(g => g.ToString("x4")));
+            return JoinGroups(groups, "x4");
         }
 
         private static bool IsValidGroup(string group)
@@ -162,6 +168,11 @@
                 }
             }
             return true;
+        }
+
+        private static string JoinGroups(ushort[] groups, string format)
+        {
+            return string.Join(":", groups.Select(g => g.ToString(format)));
         }
     }
 }

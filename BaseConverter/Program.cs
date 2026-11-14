@@ -30,11 +30,11 @@
                 try
                 {
                     var result = Ipv6Formatter.Format(test);
-                    Console.WriteLine($"{test,-45} -> {result.ShortAddress} <> {result.FullAddress}");
+                    Console.WriteLine($"{test,-45} < {result.ShortAddress, -36} : {result.FullAddress, 36} >");
                 }
                 catch (ArgumentException ex)
                 {
-                    Console.WriteLine($"{test,-45} -> ERROR: {ex.Message}");
+                    Console.WriteLine($"{test,-45} < ERROR: {ex.Message, -71} >");
                 }
             }
         }
