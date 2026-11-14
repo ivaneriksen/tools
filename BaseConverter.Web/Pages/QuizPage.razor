@@ -1,0 +1,238 @@
+﻿@page "/quiz"
+@inject IJSRuntime JS
+
+<PageTitle>Base Conversion Quiz</PageTitle>
+
+<h1 class="fs-3">Base Conversion Quiz</h1>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <div class="mb-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="base2"
+                               checked="@selectedBases.Contains(2)"
+                               disabled="@((selectedBases.Contains(2) && selectedBases.Count == 2) || secondsLeft > 0)"
+                               @onchange="() => ToggleBase(2)" />
+                        <label class="form-check-label" for="base2">Binary</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="base8"
+                               checked="@selectedBases.Contains(8)"
+                               disabled="@((selectedBases.Contains(8) && selectedBases.Count == 2) || secondsLeft > 0)"
+                               @onchange="() => ToggleBase(8)" />
+                        <label class="form-check-label" for="base8">Octal</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="base10"
+                               checked="@selectedBases.Contains(10)"
+                               disabled="@((selectedBases.Contains(10) && selectedBases.Count == 2) || secondsLeft > 0)"
+                               @onchange="() => ToggleBase(10)" />
+                        <label class="form-check-label" for="base10">Decimal</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="base16"
+                               checked="@selectedBases.Contains(16)"
+                               disabled="@((selectedBases.Contains(16) && selectedBases.Count == 2) || secondsLeft > 0)"
+                               @onchange="() => ToggleBase(16)" />
+                        <label class="form-check-label" for="base16">Hexadecimal</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="difficulty" id="easy"
+                               checked="@(maxNumber == 15)"
+                               disabled="@(secondsLeft > 0)"
+                               @onchange="() => SetDifficulty(15)" />
+                        <label class="form-check-label" for="easy">Easy</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="difficulty" id="hard"
+                               checked="@(maxNumber == 255)"
+                               disabled="@(secondsLeft > 0)"
+                               @onchange="() => SetDifficulty(255)" />
+                        <label class="form-check-label" for="hard">Hard</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="difficulty" id="insane"
+                               checked="@(maxNumber == 65535)"
+                               disabled="@(secondsLeft > 0)"
+                               @onchange="() => SetDifficulty(65535)" />
+                        <label class="form-check-label" for="insane">Insane</label>
+                    </div>
+                </div>
+
+                <form @onsubmit="CheckAnswer" @onsubmit:preventDefault>
+                    <div class="row g-2 mb-4">
+                        <div class="col-5">
+                            <button type="button" class="btn btn-outline-primary w-100"
+                                    @onclick="StartChallenge" disabled="@(secondsLeft > 0)">
+                                Start challenge
+                            </button>
+                        </div>
+                        <div class="col-5">
+                            <button type="button" class="btn btn-outline-primary w-100"
+                                    @onclick="Clear" disabled="@(secondsLeft > 0)">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    @if (!(challengeOver && history.Count > 0))
+                    {
+                        <p class="fs-5 mb-3">
+                            Score: @history.Count(a => a.IsCorrect) / @history.Count
+                            @if (secondsLeft > 0)
+                            {
+                                <span class="ms-3"> Time: @secondsLeft</span>
+                            }
+                            <span class="ms-3 text-secondary">Best: @bestScore</span>
+                        </p>
+                    }
+                    else
+                    {
+                        <div class="alert alert-secondary">
+                            Correct: @history.Count(a => a.IsCorrect) / @history.Count |
+                            Wrong: @history.Count(a => !a.IsCorrect) / @history.Count |
+                            Accuracy: @(history.Count(a => a.IsCorrect) * 100 / history.Count)% |
+                            Best: @bestScore
+                        </div>
+                    }
+
+                    <p class="fs-5 mb-3">@question</p>
+
+                    <div class="row g-2 mb-4">
+                        <div class="col-5">
+                            <input class="form-control" @ref="answerInput" @bind="userAnswer" @bind:event="oninput" />
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-4">
+                        <div class="col-5">
+                            <button type="submit" class="btn btn-outline-primary w-100">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        @foreach (AnsweredQuestion aQ in history)
+        {
+            <p class="@(aQ.IsCorrect ? "text-success" : "text-danger")">
+                @aQ.Question.Number in base @aQ.Question.FromBase equals
+                @aQ.Question.Answer in base @aQ.Question.ToBase. Your answer:
+                @aQ.UserAnswer.
+            </p>
+        }
+    </div>
+</div>
+
+@code {
+    private ElementReference answerInput;
+    private string question = "";
+    private QuizQuestion quizQuestion;
+    private string userAnswer = "";
+    private List<int> selectedBases = [2, 16];
+    private int maxNumber = 255;
+    private record AnsweredQuestion(QuizQuestion Question, string UserAnswer, bool IsCorrect);
+    private List<AnsweredQuestion> history = [];
+    private int secondsLeft = 0;
+    private bool challengeOver = false;
+    private int bestScore = 0;
+
+    // For highscores
+    private string BestKey => $"quizBest{maxNumber}_{string.Join("-", selectedBases.Order())}";
+
+    protected override async Task OnInitializedAsync()
+    {
+        MakeQuestion();
+        await LoadBest();
+    }
+
+    private void MakeQuestion()
+    {
+        quizQuestion = BaseQuiz.Generate(selectedBases.ToArray(), maxNumber, Random.Shared);
+        question = $"Convert {quizQuestion.Number} from base {quizQuestion.FromBase} to base {quizQuestion.ToBase}.";
+    }
+
+    private void CheckAnswer()
+    {
+        challengeOver = false;
+        bool isAnswerCorrect = BaseQuiz.IsCorrect(quizQuestion, userAnswer);
+        history.Insert(0, new AnsweredQuestion(quizQuestion, userAnswer, isAnswerCorrect));
+        userAnswer = "";
+        MakeQuestion();
+    }
+
+    private async Task ToggleBase(int baseValue)
+    {
+        if (selectedBases.Contains(baseValue))
+        {
+            selectedBases.Remove(baseValue);
+        }
+        else
+        {
+            selectedBases.Add(baseValue);
+        }
+        MakeQuestion();
+        await LoadBest();
+    }
+
+    private async Task SetDifficulty(int max)
+    {
+        maxNumber = max;
+        MakeQuestion();
+        await LoadBest();
+    }
+
+    private async Task StartChallenge()
+    {
+        challengeOver = false;
+        Clear();
+        MakeQuestion();
+        secondsLeft = 60;
+        await RunTimer();
+    }
+
+    private void Clear()
+    {
+        history = [];
+    }
+
+    private async Task RunTimer()
+    {
+        using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromSeconds(1));
+        while (secondsLeft > 0)
+        {
+            await timer.WaitForNextTickAsync();
+            secondsLeft--;
+            StateHasChanged();
+        }
+        challengeOver = true;
+        await SaveBestIfHigher();
+    }
+
+    private async Task LoadBest()
+    {
+        string? saved = await JS.InvokeAsync<string?>("localStorage.getItem", BestKey);
+        bestScore = int.TryParse(saved, out int value) ? value : 0;
+    }
+
+    private async Task SaveBestIfHigher()
+    {
+        int correct = history.Count(a => a.IsCorrect);
+        if (correct > bestScore)
+        {
+            bestScore = correct;
+            await JS.InvokeVoidAsync("localStorage.setItem", BestKey, bestScore.ToString());
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await answerInput.FocusAsync();
+    }
+}
