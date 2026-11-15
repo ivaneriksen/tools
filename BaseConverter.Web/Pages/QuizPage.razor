@@ -46,21 +46,21 @@
                                checked="@(maxNumber == 15)"
                                disabled="@(secondsLeft > 0)"
                                @onchange="() => SetDifficulty(15)" />
-                        <label class="form-check-label" for="easy">Easy</label>
+                        <label class="form-check-label" for="easy">Easy <small class="text-secondary">(4 bits)</small></label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="difficulty" id="hard"
                                checked="@(maxNumber == 255)"
                                disabled="@(secondsLeft > 0)"
                                @onchange="() => SetDifficulty(255)" />
-                        <label class="form-check-label" for="hard">Hard</label>
+                        <label class="form-check-label" for="hard">Hard <small class="text-secondary">(8 bits)</small></label>
                     </div>
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="difficulty" id="insane"
                                checked="@(maxNumber == 65535)"
                                disabled="@(secondsLeft > 0)"
                                @onchange="() => SetDifficulty(65535)" />
-                        <label class="form-check-label" for="insane">Insane</label>
+                        <label class="form-check-label" for="insane">Insane <small class="text-secondary">(16 bits)</small></label>
                     </div>
                 </div>
 
