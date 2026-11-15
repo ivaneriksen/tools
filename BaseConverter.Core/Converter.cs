@@ -64,5 +64,25 @@
             }
             return value;
         }
+
+        // Groups binary numbers for readability
+        public static string GroupDigits(string number)
+        {
+            if (number.Length < 5) return number;
+
+            string numberGrouped = "";
+            for (int i = number.Length - 1; i >= 0; i--)
+            {
+                if ((number.Length - i) % 4 == 0 && i != 0)
+                {
+                    numberGrouped = " " + number[i] + numberGrouped;
+                }
+                else
+                {
+                    numberGrouped = number[i] + numberGrouped;
+                }
+            }
+            return numberGrouped;
+        }
     }
 }

@@ -59,17 +59,6 @@ namespace BaseConverter.Tests
             Assert.False(BaseQuiz.IsCorrect(question, userAnswer));
         }
 
-        [Theory]
-        [InlineData("1111", "1111")]
-        [InlineData("101", "101")]
-        [InlineData("1011", "1011")]
-        [InlineData("10110111", "1011 0111")]
-        [InlineData("101101", "10 1101")]
-        [InlineData("1111111111111111", "1111 1111 1111 1111")]
-        public void GroupDigits_InsertsSpaceEveryFourDigits(string input, string correctString)
-        {
-            // Act & Assert
-            Assert.Equal(correctString, BaseQuiz.GroupDigits(input));
-        }
+        
     }
 }

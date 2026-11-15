@@ -124,9 +124,9 @@
         @foreach (AnsweredQuestion aQ in history)
         {
             <p class="@(aQ.IsCorrect ? "text-success" : "text-danger")">
-                @Format(aQ.Question.Number, aQ.Question.FromBase) in base @aQ.Question.FromBase equals
-                @Format(aQ.Question.Answer, aQ.Question.ToBase) in base @aQ.Question.ToBase. Your answer:
-                @aQ.UserAnswer.
+                <span class="font-monospace">@Format(aQ.Question.Number, aQ.Question.FromBase)</span> in base @aQ.Question.FromBase equals
+                <span class="font-monospace">@Format(aQ.Question.Answer, aQ.Question.ToBase)</span> in base @aQ.Question.ToBase. Your answer:
+                <span class="font-monospace">@aQ.UserAnswer</span>.
             </p>
         }
     </div>
@@ -260,5 +260,5 @@
     }
 
     // Helper for showing binary numbers grouped in questions and history
-    private static string Format(string number, int numberBase) => (numberBase == 2) ? BaseQuiz.GroupDigits(number) : number;
+    private static string Format(string number, int numberBase) => (numberBase == 2) ? Converter.GroupDigits(number) : number;
 }

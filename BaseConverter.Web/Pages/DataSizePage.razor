@@ -13,7 +13,7 @@
             <div class="card-body p-3">
                 <div class="row g-2 align-items-center">
                     <div class="col-auto">
-                        <input type="number" min="0" class="form-control" style="width: 12rem"
+                        <input type="number" min="0" class="form-control font-monospace" style="width: 12rem"
                                @bind="amount" @bind:event="oninput" @bind:after="Update"
                                onkeydown="if (event.key.length === 1 && !/[0-9.]/.test(event.key)) event.preventDefault();" />
                     </div>
@@ -44,7 +44,7 @@
                     <div class="col">
                         <div class="unit-box d-flex justify-content-between">
                             <span class="text-secondary">@size.Unit.Name</span>
-                            <span>@Format(size.Amount)</span>
+                            <span class="font-monospace">@Format(size.Amount)</span>
                         </div>
                     </div>
                 }

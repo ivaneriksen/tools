@@ -11,18 +11,14 @@
             <div class="card-body p-4">
                 <form @onsubmit="DoConvert" @onsubmit:preventDefault>
 
-                    <div class="row g-2 align-items-center mb-4">
-                        <div class="col-2">
-                            <label class="col-form-label">Number:</label>
-                        </div>
-                        <div class="col-5">
-                            <input class="form-control" @bind="input" @bind:event="oninput" />
+                    <div class="row g-2 mb-3">
+                        <div class="col-9">
+                            <label class="form-label" for="number">Number</label>
+                            <input id="number" class="form-control font-monospace" @bind="input" @bind:event="oninput" />
                         </div>
                         <div class="col-3">
-                            <label class="col-form-label">From base:</label>
-                        </div>
-                        <div class="col-2">
-                            <select class="form-select" @bind="fromBase">
+                            <label class="form-label" for="fromBase">From base</label>
+                            <select id="fromBase" class="form-select" @bind="fromBase">
                                 @for (int b = 2; b <= 36; b++)
                                 {
                                     <option value="@b">@b</option>
@@ -31,35 +27,30 @@
                         </div>
                     </div>
 
-                    <div class="row g-2 mb-4">
-                        <div class="col-5 offset-2">
+                    <div class="row g-2 mb-3">
+                        <div class="col-9">
                             <button type="submit" class="btn btn-outline-primary w-100">Convert</button>
                         </div>
-                        <div class="col-2 offset-3">
+                        <div class="col-3">
                             <button type="button" class="btn btn-outline-primary w-100" @onclick="Swap" aria-label="Swap bases">
                                 <i class="bi bi-arrow-down-up"></i>
                             </button>
                         </div>
                     </div>
-                    
 
-                    <div class="row g-2 align-items-center">
-                        <div class="col-2">
-                            <label class="col-form-label">Result:</label>
-                        </div>
-                        <div class="col-5">
+                    <div class="row g-2">
+                        <div class="col-9">
+                            <label class="form-label" for="result">Result</label>
                             <div class="input-group">
-                                <input class="form-control" value="@result" readonly />
+                                <input id="result" class="form-control font-monospace" value="@(toBase == 2 && !string.IsNullOrEmpty(result) ? Converter.GroupDigits(result) : result)" readonly />
                                 <button type="button" class="btn @(copied ? "btn-copied" : "btn-outline-primary")" @onclick="CopyResult" aria-label="Copy result">
                                     <i class="bi @(copied ? "bi-check-lg" : "bi-clipboard")"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="col-3">
-                            <label class="col-form-label">To base:</label>
-                        </div>
-                        <div class="col-2">
-                            <select class="form-select" @bind="toBase">
+                            <label class="form-label" for="toBase">To base</label>
+                            <select id="toBase" class="form-select" @bind="toBase">
                                 @for (int b = 2; b <= 36; b++)
                                 {
                                     <option value="@b">@b</option>
@@ -90,7 +81,7 @@
     {
         try
         {
-            result = Converter.Convert(input, fromBase, toBase);
+            result = Converter.Convert(input.Replace(" ", ""), fromBase, toBase);
             errorMessage = null;
         }
         catch (ArgumentException ex)
@@ -116,7 +107,7 @@
         (fromBase, toBase) = (toBase, fromBase);
         if (!string.IsNullOrWhiteSpace(result))
         {
-            input = result;
+            input = (fromBase == 2) ? Converter.GroupDigits(result) : result;
 
             DoConvert();
         }

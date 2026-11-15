@@ -53,5 +53,18 @@ namespace BaseConverter.Tests
             // Act & Assert
             Assert.Throws<OverflowException>(() => Converter.Convert(largeNumber, 16, 10));
         }
+
+        [Theory]
+        [InlineData("1111", "1111")]
+        [InlineData("101", "101")]
+        [InlineData("1011", "1011")]
+        [InlineData("10110111", "1011 0111")]
+        [InlineData("101101", "10 1101")]
+        [InlineData("1111111111111111", "1111 1111 1111 1111")]
+        public void GroupDigits_InsertsSpaceEveryFourDigits(string input, string correctString)
+        {
+            // Act & Assert
+            Assert.Equal(correctString, Converter.GroupDigits(input));
+        }
     }
 }
