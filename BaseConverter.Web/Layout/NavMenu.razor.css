@@ -4,12 +4,23 @@
 
 .top-row {
     min-height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .navbar-brand {
     font-size: 1.1rem;
+    padding-left: 0.25rem;
 }
+
+    .navbar-brand img {
+        width: 2rem;
+        height: 2rem;
+        margin-right: 0.75rem;
+        border: 1px solid var(--accent);
+        border-radius: 50%;
+        padding: 2px;
+    }
 
 .bi {
     display: inline-flex;

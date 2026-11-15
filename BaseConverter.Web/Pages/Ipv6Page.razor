@@ -96,7 +96,7 @@
         await JS.InvokeVoidAsync("navigator.clipboard.writeText", text);
         copied = which;
         StateHasChanged();
-        await Task.Delay(1500);
+        await Task.Delay(500);
         copied = null;
     }
 }
