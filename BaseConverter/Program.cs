@@ -37,6 +37,21 @@
                     Console.WriteLine($"{test,-45} < ERROR: {ex.Message, -71} >");
                 }
             }
+
+            string[] groupDigits_test =
+            {
+                "10101010101",
+                "1111",
+                "0001",
+                "11111",
+                "111"
+            };
+            foreach (string test in groupDigits_test)
+            {
+                Console.WriteLine(BaseQuiz.GroupDigits(test));
+            }
+         
+
         }
     }
 }

@@ -123,8 +123,8 @@
         @foreach (AnsweredQuestion aQ in history)
         {
             <p class="@(aQ.IsCorrect ? "text-success" : "text-danger")">
-                @aQ.Question.Number in base @aQ.Question.FromBase equals
-                @aQ.Question.Answer in base @aQ.Question.ToBase. Your answer:
+                @Format(aQ.Question.Number, aQ.Question.FromBase) in base @aQ.Question.FromBase equals
+                @Format(aQ.Question.Answer, aQ.Question.ToBase) in base @aQ.Question.ToBase. Your answer:
                 @aQ.UserAnswer.
             </p>
         }
@@ -156,7 +156,7 @@
     private void MakeQuestion()
     {
         quizQuestion = BaseQuiz.Generate(selectedBases.ToArray(), maxNumber, Random.Shared);
-        question = $"Convert {quizQuestion.Number} from base {quizQuestion.FromBase} to base {quizQuestion.ToBase}.";
+        question = $"Convert {Format(quizQuestion.Number, quizQuestion.FromBase)} from base {quizQuestion.FromBase} to base {quizQuestion.ToBase}.";
     }
 
     private void CheckAnswer()
@@ -236,4 +236,7 @@
     {
         await answerInput.FocusAsync();
     }
+
+    // Helper for showing binary numbers grouped in questions and history
+    private static string Format(string number, int numberBase) => (numberBase == 2) ? BaseQuiz.GroupDigits(number) : number;
 }

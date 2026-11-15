@@ -38,6 +38,7 @@ namespace BaseConverter.Tests
         [InlineData("B7", "00b7")]
         [InlineData("7", "07")]
         [InlineData("10001", "010001")]
+        [InlineData("11001", "11 001")]
         public void IsCorrect_ReturnsTrue_IgnoringCaseSpacesAndLeadingZeros(string correctAnswer, string userAnswer)
         {
             // Arrange
@@ -56,6 +57,19 @@ namespace BaseConverter.Tests
             QuizQuestion question = new QuizQuestion("183", 16, 10, correctAnswer);
             // Act & Assert
             Assert.False(BaseQuiz.IsCorrect(question, userAnswer));
+        }
+
+        [Theory]
+        [InlineData("1111", "1111")]
+        [InlineData("101", "101")]
+        [InlineData("1011", "1011")]
+        [InlineData("10110111", "1011 0111")]
+        [InlineData("101101", "10 1101")]
+        [InlineData("1111111111111111", "1111 1111 1111 1111")]
+        public void GroupDigits_InsertsSpaceEveryFourDigits(string input, string correctString)
+        {
+            // Act & Assert
+            Assert.Equal(correctString, BaseQuiz.GroupDigits(input));
         }
     }
 }
