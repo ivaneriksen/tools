@@ -10,7 +10,7 @@ Built to practice C# and web development, and to provide practical tools for stu
 
 ## Tools
 
-- **Base Converter** - convert numbers between any bases from 2 to 36 (binary, octal, decimal, hex and more). Validates input and gives clear error messages for invalid digits, bases and numbers that are too large.
+- **Base Converter** - convert numbers between any bases from 2 to 36. Validates input and gives clear error messages for invalid digits, bases and numbers that are too large.
 - **Data Size Converter** - enter an amount and a unit and see it in all units at once: bits, bytes, network units (kbit, Mbit...), decimal units (kB, MB...) and binary units (KiB, MiB...). Updates live as you type.
 - **IPv6 Formatter** - turn an IPv6 address into its short, trimmed and full forms, with copy buttons. Validates the address and updates live as you type.
 - **Base Conversion Quiz** - practice converting between binary, octal, decimal and hex. Pick bases and difficulty (4, 8 or 16 bits), play freely or take a 60-second challenge with a high score saved locally in your browser.
