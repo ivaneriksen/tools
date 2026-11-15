@@ -82,7 +82,7 @@
                             {
                                 <span class="ms-3"> Time: @secondsLeft</span>
                             }
-                            <span class="ms-3 text-secondary">Best: @bestScore</span>
+                            <span class="ms-3 text-secondary">High Score: @highScore</span>
                         </p>
                     }
                     else
@@ -91,7 +91,7 @@
                             Correct: @history.Count(a => a.IsCorrect) / @history.Count |
                             Wrong: @history.Count(a => !a.IsCorrect) / @history.Count |
                             Accuracy: @(history.Count(a => a.IsCorrect) * 100 / history.Count)% |
-                            Best: @bestScore
+                            High Score: @highScore
                         </div>
                     }
 
@@ -142,15 +142,15 @@
     private List<AnsweredQuestion> history = [];
     private int secondsLeft = 0;
     private bool challengeOver = false;
-    private int bestScore = 0;
+    private int highScore = 0;
 
     // For highscores
-    private string BestKey => $"quizBest{maxNumber}_{string.Join("-", selectedBases.Order())}";
+    private string HighScoreKey => $"quizBest{maxNumber}_{string.Join("-", selectedBases.Order())}";
 
     protected override async Task OnInitializedAsync()
     {
         MakeQuestion();
-        await LoadBest();
+        await LoadHighScore();
     }
 
     private void MakeQuestion()
@@ -179,14 +179,14 @@
             selectedBases.Add(baseValue);
         }
         MakeQuestion();
-        await LoadBest();
+        await LoadHighScore();
     }
 
     private async Task SetDifficulty(int max)
     {
         maxNumber = max;
         MakeQuestion();
-        await LoadBest();
+        await LoadHighScore();
     }
 
     private async Task StartChallenge()
@@ -213,22 +213,22 @@
             StateHasChanged();
         }
         challengeOver = true;
-        await SaveBestIfHigher();
+        await SaveHighScoreIfHigher();
     }
 
-    private async Task LoadBest()
+    private async Task LoadHighScore()
     {
-        string? saved = await JS.InvokeAsync<string?>("localStorage.getItem", BestKey);
-        bestScore = int.TryParse(saved, out int value) ? value : 0;
+        string? saved = await JS.InvokeAsync<string?>("localStorage.getItem", HighScoreKey);
+        highScore = int.TryParse(saved, out int value) ? value : 0;
     }
 
-    private async Task SaveBestIfHigher()
+    private async Task SaveHighScoreIfHigher()
     {
         int correct = history.Count(a => a.IsCorrect);
-        if (correct > bestScore)
+        if (correct > highScore)
         {
-            bestScore = correct;
-            await JS.InvokeVoidAsync("localStorage.setItem", BestKey, bestScore.ToString());
+            highScore = correct;
+            await JS.InvokeVoidAsync("localStorage.setItem", HighScoreKey, highScore.ToString());
         }
     }
 
