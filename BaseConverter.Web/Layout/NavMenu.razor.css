@@ -17,9 +17,6 @@
         width: 2rem;
         height: 2rem;
         margin-right: 0.75rem;
-        border: 1px solid var(--accent);
-        border-radius: 50%;
-        padding: 2px;
     }
 
 .sidebar-footer {
