@@ -2,7 +2,7 @@
 
 Small collection of web tools for my class at data- og kommunikationsuddannelsen - built with C# and Blazor WebAssembly.
 
-Built to practice C# and web development, and hopefully give my classmates some useful tools for our assignments.
+Built to practice C# and web development, and to provide practical tools for students at TEC.
 
 **Try it live:** https://ivaneriksen.github.io/tools/
 
@@ -20,22 +20,9 @@ Built to practice C# and web development, and hopefully give my classmates some 
 - C# / .NET 10
 - Blazor WebAssembly
 - Bootstrap 5 with a custom dark theme
+- xUnit for unit tests
 - GitHub Actions for automatic build and deployment
 - GitHub Pages for hosting
-
-## Project structure
-
-```
-Tools.sln
-├── BaseConverter.Core     Class library with the logic for all tools (no UI)
-├── BaseConverter.Web      Blazor WebAssembly site (pages, layout, styling)
-└── BaseConverter          Console app used for testing the logic
-├── BaseConverter.Tests    xUnit tests for the logic in Core
-```
-
-## Testing
-
-The logic in `BaseConverter.Core` is covered by xUnit tests, including edge cases (invalid input, overflow, negative numbers) and round-trip tests. Run them with `dotnet test` or from Test Explorer in Visual Studio.
 
 ## Run locally
 
@@ -45,6 +32,20 @@ Requirements: .NET 10 SDK and Visual Studio (or another C# editor).
 2. Open `Tools.sln` in Visual Studio.
 3. Set `BaseConverter.Web` as the startup project.
 4. Press F5.
+
+## Project structure
+
+```
+Tools.sln
+├── BaseConverter.Core     Class library with the logic for all tools (no UI)
+├── BaseConverter.Web      Blazor WebAssembly site (pages, layout, styling)
+├── BaseConverter.Tests    xUnit tests for the logic in Core
+└── BaseConverter          Console app for quick manual testing
+```
+
+## Testing
+
+The logic in `BaseConverter.Core` is covered by xUnit tests, including edge cases (invalid input, overflow, negative numbers) and round-trip tests. Run them with `dotnet test` or from Test Explorer in Visual Studio.
 
 ## Deployment
 
