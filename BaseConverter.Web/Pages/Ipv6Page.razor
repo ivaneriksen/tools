@@ -1,4 +1,5 @@
 ﻿@page "/ipv6"
+@inject IJSRuntime JS
 
 <PageTitle>IPv6 Formatter</PageTitle>
 
@@ -25,13 +26,31 @@
             <div class="card">
                 <div class="card-body p-4">
                     <label class="form-label">Short form</label>
-                    <input class="form-control font-monospace mb-3" value="@result.Value.ShortAddress" readonly />
+                    <div class="input-group mb-3">
+                        <input class="form-control font-monospace" value="@result.Value.ShortAddress" readonly />
+                        <button type="button" class="btn btn-outline-primary"
+                                @onclick='() => Copy(result.Value.ShortAddress, "short")'>
+                            <i class="bi @(copied == "short" ? "bi-check-lg" : "bi-clipboard")"></i>
+                        </button>
+                    </div>
 
                     <label class="form-label">Trimmed form</label>
-                    <input class="form-control font-monospace mb-3" value="@result.Value.TrimmedAddress" readonly />
+                    <div class="input-group mb-3">
+                        <input class="form-control font-monospace" value="@result.Value.TrimmedAddress" readonly />
+                        <button type="button" class="btn btn-outline-primary"
+                                @onclick='() => Copy(result.Value.TrimmedAddress, "trimmed")'>
+                            <i class="bi @(copied == "trimmed" ? "bi-check-lg" : "bi-clipboard")"></i>
+                        </button>
+                    </div>
 
                     <label class="form-label">Full form</label>
-                    <input class="form-control font-monospace" value="@result.Value.FullAddress" readonly />
+                    <div class="input-group">
+                        <input class="form-control font-monospace" value="@result.Value.FullAddress" readonly />
+                        <button type="button" class="btn btn-outline-primary"
+                                @onclick='() => Copy(result.Value.FullAddress, "full")'>
+                            <i class="bi @(copied == "full" ? "bi-check-lg" : "bi-clipboard")"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         }
@@ -43,6 +62,8 @@
     private string input = "2001:db8::1";
     private Ipv6Result? result = null;
     private string? errorMessage = null;
+
+    private string? copied;
 
     protected override void OnInitialized()
     {
@@ -68,5 +89,14 @@
             result = null;
             errorMessage = ex.Message;
         }
+    }
+
+    private async Task Copy(string text, string which)
+    {
+        await JS.InvokeVoidAsync("navigator.clipboard.writeText", text);
+        copied = which;
+        StateHasChanged();
+        await Task.Delay(1500);
+        copied = null;
     }
 }

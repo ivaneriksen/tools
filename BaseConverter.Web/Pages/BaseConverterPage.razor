@@ -51,7 +51,7 @@
                             <div class="input-group">
                                 <input class="form-control" value="@result" readonly />
                                 <button type="button" class="btn btn-outline-primary" @onclick="CopyResult" aria-label="Copy result">
-                                    <i class="bi bi-clipboard"></i>
+                                    <i class="bi @(copied ? "bi-check-lg" : "bi-clipboard")"></i>
                                 </button>
                             </div>
                         </div>
@@ -83,6 +83,8 @@
     private int toBase = 2;
     private string result = string.Empty;
     private string? errorMessage = null;
+
+    private bool copied;
 
     private void DoConvert()
     {
@@ -126,6 +128,10 @@
         if (!string.IsNullOrEmpty(result))
         {
             await JS.InvokeVoidAsync("navigator.clipboard.writeText", result);
+            copied = true;
+            StateHasChanged();
+            await Task.Delay(1500);
+            copied = false;
         }
     }
 }
