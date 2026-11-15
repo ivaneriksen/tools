@@ -14,7 +14,7 @@
                 <div class="row g-2 align-items-center">
                     <div class="col-auto">
                         <input type="number" min="0" class="form-control font-monospace" style="width: 12rem"
-                               @bind="amount" @bind:event="oninput" @bind:after="Update"
+                               autocomplete="off" @bind="amount" @bind:event="oninput" @bind:after="Update"
                                onkeydown="if (event.key.length === 1 && !/[0-9.]/.test(event.key)) event.preventDefault();" />
                     </div>
                     <div class="col-auto">
