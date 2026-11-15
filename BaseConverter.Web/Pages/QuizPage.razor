@@ -7,107 +7,108 @@
 
 <div class="row">
     <div class="col-lg-6">
+        <div class="card mb-3">
+            <div class="card-body p-3">
+                <!-- BASES -->
+                <div class="small text-secondary mb-1">Bases</div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="base2"
+                           checked="@selectedBases.Contains(2)"
+                           disabled="@((selectedBases.Contains(2) && selectedBases.Count == 2) || secondsLeft > 0)"
+                           @onchange="() => ToggleBase(2)" />
+                    <label class="form-check-label" for="base2">Binary</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="base8"
+                           checked="@selectedBases.Contains(8)"
+                           disabled="@((selectedBases.Contains(8) && selectedBases.Count == 2) || secondsLeft > 0)"
+                           @onchange="() => ToggleBase(8)" />
+                    <label class="form-check-label" for="base8">Octal</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="base10"
+                           checked="@selectedBases.Contains(10)"
+                           disabled="@((selectedBases.Contains(10) && selectedBases.Count == 2) || secondsLeft > 0)"
+                           @onchange="() => ToggleBase(10)" />
+                    <label class="form-check-label" for="base10">Decimal</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="base16"
+                           checked="@selectedBases.Contains(16)"
+                           disabled="@((selectedBases.Contains(16) && selectedBases.Count == 2) || secondsLeft > 0)"
+                           @onchange="() => ToggleBase(16)" />
+                    <label class="form-check-label" for="base16">Hexadecimal</label>
+                </div>
+                <!-- DIFFICULTY-->
+                <div class="small text-secondary mb-1 mt-3">Difficulty</div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="difficulty" id="easy"
+                           checked="@(maxNumber == 15)"
+                           disabled="@(secondsLeft > 0)"
+                           @onchange="() => SetDifficulty(15)" />
+                    <label class="form-check-label" for="easy">Easy <small class="text-secondary">(4 bits)</small></label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="difficulty" id="hard"
+                           checked="@(maxNumber == 255)"
+                           disabled="@(secondsLeft > 0)"
+                           @onchange="() => SetDifficulty(255)" />
+                    <label class="form-check-label" for="hard">Hard <small class="text-secondary">(8 bits)</small></label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="difficulty" id="insane"
+                           checked="@(maxNumber == 65535)"
+                           disabled="@(secondsLeft > 0)"
+                           @onchange="() => SetDifficulty(65535)" />
+                    <label class="form-check-label" for="insane">Insane <small class="text-secondary">(16 bits)</small></label>
+                </div>
+            </div>
+        </div>
         <div class="card">
             <div class="card-body p-4">
-                <div class="mb-3">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="base2"
-                               checked="@selectedBases.Contains(2)"
-                               disabled="@((selectedBases.Contains(2) && selectedBases.Count == 2) || secondsLeft > 0)"
-                               @onchange="() => ToggleBase(2)" />
-                        <label class="form-check-label" for="base2">Binary</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="base8"
-                               checked="@selectedBases.Contains(8)"
-                               disabled="@((selectedBases.Contains(8) && selectedBases.Count == 2) || secondsLeft > 0)"
-                               @onchange="() => ToggleBase(8)" />
-                        <label class="form-check-label" for="base8">Octal</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="base10"
-                               checked="@selectedBases.Contains(10)"
-                               disabled="@((selectedBases.Contains(10) && selectedBases.Count == 2) || secondsLeft > 0)"
-                               @onchange="() => ToggleBase(10)" />
-                        <label class="form-check-label" for="base10">Decimal</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="base16"
-                               checked="@selectedBases.Contains(16)"
-                               disabled="@((selectedBases.Contains(16) && selectedBases.Count == 2) || secondsLeft > 0)"
-                               @onchange="() => ToggleBase(16)" />
-                        <label class="form-check-label" for="base16">Hexadecimal</label>
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="difficulty" id="easy"
-                               checked="@(maxNumber == 15)"
-                               disabled="@(secondsLeft > 0)"
-                               @onchange="() => SetDifficulty(15)" />
-                        <label class="form-check-label" for="easy">Easy <small class="text-secondary">(4 bits)</small></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="difficulty" id="hard"
-                               checked="@(maxNumber == 255)"
-                               disabled="@(secondsLeft > 0)"
-                               @onchange="() => SetDifficulty(255)" />
-                        <label class="form-check-label" for="hard">Hard <small class="text-secondary">(8 bits)</small></label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="difficulty" id="insane"
-                               checked="@(maxNumber == 65535)"
-                               disabled="@(secondsLeft > 0)"
-                               @onchange="() => SetDifficulty(65535)" />
-                        <label class="form-check-label" for="insane">Insane <small class="text-secondary">(16 bits)</small></label>
-                    </div>
-                </div>
-
                 <form @onsubmit="CheckAnswer" @onsubmit:preventDefault>
-                    <div class="row g-2 mb-4">
-                        <div class="col-5">
-                            <button type="button" class="btn btn-outline-primary w-100"
-                                    @onclick="StartChallenge" disabled="@(secondsLeft > 0)">
-                                Start challenge
-                            </button>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="text-secondary">
+                            Score @history.Count(a => a.IsCorrect)/@history.Count · High score @highScore
                         </div>
+
+                        @if (secondsLeft > 0)
+                        {
+                            <span class="fs-5">@secondsLeft s</span>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-sm btn-outline-primary" @onclick="StartChallenge">
+                                ▶ 60s challenge
+                            </button>
+                        }
                     </div>
 
-                    @if (!(challengeOver && history.Count > 0))
+                    @if (challengeOver && history.Count > 0)
                     {
-                        <p class="fs-5 mb-3">
-                            Score: @history.Count(a => a.IsCorrect) / @history.Count
-                            @if (secondsLeft > 0)
-                            {
-                                <span class="ms-3"> Time: @secondsLeft</span>
-                            }
-                            <span class="ms-3 text-secondary">High Score: @highScore</span>
-                        </p>
+                        <div class="alert alert-secondary">
+                            Correct: @history.Count(a => a.IsCorrect) |
+                            Wrong: @history.Count(a => !a.IsCorrect) |
+                            Accuracy: @(history.Count(a => a.IsCorrect) * 100 / history.Count)%
+                        </div>
+                    }
+
+                    <p class="fs-4 text-center font-monospace my-4">@question</p>
+
+                    <div class="input-group">
+                        <input class="form-control font-monospace" @ref="answerInput"
+                               @bind="userAnswer" @bind:event="oninput" placeholder="Your answer" />
+                        <button type="submit" class="btn btn-outline-primary">Submit</button>
+                    </div>
+
+                    @if (secondsLeft == 0)
+                    {
+                        <div class="small text-secondary mt-2">Type "start" to begin a 60s challenge.</div>
                     }
                     else
                     {
-                        <div class="alert alert-secondary">
-                            Correct: @history.Count(a => a.IsCorrect) / @history.Count |
-                            Wrong: @history.Count(a => !a.IsCorrect) / @history.Count |
-                            Accuracy: @(history.Count(a => a.IsCorrect) * 100 / history.Count)% |
-                            High Score: @highScore
-                        </div>
+                        <div class="small text-secondary mt-2">Type "stop" to end the challenge.</div>
                     }
-
-                    <p class="fs-5 mb-3">@question</p>
-
-                    <div class="row g-2 mb-4">
-                        <div class="col-5">
-                            <input class="form-control" @ref="answerInput" @bind="userAnswer" @bind:event="oninput" />
-                        </div>
-                    </div>
-
-                    <div class="row g-2 mb-4">
-                        <div class="col-5">
-                            <button type="submit" class="btn btn-outline-primary w-100">Submit</button>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>
@@ -155,12 +156,33 @@
 
     private void MakeQuestion()
     {
-        quizQuestion = BaseQuiz.Generate(selectedBases.ToArray(), maxNumber, Random.Shared);
-        question = $"Convert {Format(quizQuestion.Number, quizQuestion.FromBase)} from base {quizQuestion.FromBase} to base {quizQuestion.ToBase}.";
+        QuizQuestion previousQuestion = quizQuestion;
+        do
+        {
+            quizQuestion = BaseQuiz.Generate(selectedBases.ToArray(), maxNumber, Random.Shared);
+        }
+        while (quizQuestion == previousQuestion);
+        
+        question = $"Convert {Format(quizQuestion.Number, quizQuestion.FromBase)} from base {quizQuestion.FromBase} to base {quizQuestion.ToBase}";
     }
 
-    private void CheckAnswer()
+    private async Task CheckAnswer()
     {
+        // On 'start' begin challenge
+        if (secondsLeft == 0 && userAnswer.ToLower().Trim() == "start")
+        {
+            userAnswer = "";
+            await StartChallenge();
+            return;
+        }
+        // On 'stop' interrup challenge
+        if (secondsLeft > 0 && userAnswer.ToLower().Trim() == "stop")
+        {
+            userAnswer = "";
+            secondsLeft = 0;
+            return;
+        }
+
         challengeOver = false;
         bool isAnswerCorrect = BaseQuiz.IsCorrect(quizQuestion, userAnswer);
         history.Insert(0, new AnsweredQuestion(quizQuestion, userAnswer, isAnswerCorrect));
@@ -209,7 +231,7 @@
         while (secondsLeft > 0)
         {
             await timer.WaitForNextTickAsync();
-            secondsLeft--;
+            if (secondsLeft > 0) secondsLeft--;
             StateHasChanged();
         }
         challengeOver = true;
