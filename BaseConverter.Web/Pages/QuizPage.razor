@@ -72,12 +72,6 @@
                                 Start challenge
                             </button>
                         </div>
-                        <div class="col-5">
-                            <button type="button" class="btn btn-outline-primary w-100"
-                                    @onclick="Clear" disabled="@(secondsLeft > 0)">
-                                Clear
-                            </button>
-                        </div>
                     </div>
 
                     @if (!(challengeOver && history.Count > 0))
@@ -119,6 +113,13 @@
         </div>
     </div>
     <div class="col-lg-6">
+        @if (history.Count > 0)
+        {
+            <button type="button" class="btn btn-sm btn-outline-secondary mb-3"
+                    @onclick="Clear" disabled="@(secondsLeft > 0)">
+                Clear history
+            </button>
+        }
         @foreach (AnsweredQuestion aQ in history)
         {
             <p class="@(aQ.IsCorrect ? "text-success" : "text-danger")">
