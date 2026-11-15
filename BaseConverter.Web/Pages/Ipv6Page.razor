@@ -28,7 +28,7 @@
                     <label class="form-label">Short form</label>
                     <div class="input-group mb-3">
                         <input class="form-control font-monospace" value="@result.Value.ShortAddress" readonly />
-                        <button type="button" class="btn btn-outline-primary"
+                        <button type="button" class="btn @(copied == "short" ? "btn-copied" : "btn-outline-primary")"
                                 @onclick='() => Copy(result.Value.ShortAddress, "short")'>
                             <i class="bi @(copied == "short" ? "bi-check-lg" : "bi-clipboard")"></i>
                         </button>
@@ -37,7 +37,7 @@
                     <label class="form-label">Trimmed form</label>
                     <div class="input-group mb-3">
                         <input class="form-control font-monospace" value="@result.Value.TrimmedAddress" readonly />
-                        <button type="button" class="btn btn-outline-primary"
+                        <button type="button" class="btn @(copied == "trimmed" ? "btn-copied" : "btn-outline-primary")"
                                 @onclick='() => Copy(result.Value.TrimmedAddress, "trimmed")'>
                             <i class="bi @(copied == "trimmed" ? "bi-check-lg" : "bi-clipboard")"></i>
                         </button>
@@ -46,7 +46,7 @@
                     <label class="form-label">Full form</label>
                     <div class="input-group">
                         <input class="form-control font-monospace" value="@result.Value.FullAddress" readonly />
-                        <button type="button" class="btn btn-outline-primary"
+                        <button type="button" class="btn @(copied == "full" ? "btn-copied" : "btn-outline-primary")"
                                 @onclick='() => Copy(result.Value.FullAddress, "full")'>
                             <i class="bi @(copied == "full" ? "bi-check-lg" : "bi-clipboard")"></i>
                         </button>

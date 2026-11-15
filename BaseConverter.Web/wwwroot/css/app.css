@@ -142,6 +142,12 @@ body {
     --accent-dark: #3d6fa8;
 }
 
+.btn-copied {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
 .btn-outline-primary {
     --bs-btn-color: var(--accent);
     --bs-btn-border-color: var(--accent);
