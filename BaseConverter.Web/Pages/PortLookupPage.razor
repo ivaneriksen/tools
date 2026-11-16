@@ -4,8 +4,78 @@
 
 <h1 class="fs-3">Port Lookup</h1>
 
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-body p-4">
+                <label class="form-label" for="query">Search by number, name or description</label>
+                <input id="query" class="form-control font-monospace" autocomplete="off"
+                       @bind="query" @bind:event="oninput" placeholder="e.g. 443, ssh, email" />
 
+                @if (RangeText != null)
+                {
+                    <div class="small text-secondary mt-2">@RangeText</div>
+                }
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-body p-0">
+                @if (Results.Count == 0)
+                {
+                    <div class="p-3 text-secondary">
+                        @(RangeText != null ? "No known services use this port." : $"No known services match \"{query}\".")
+                    </div>
+                }
+                else
+                {
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Port</th>
+                                <th>Name</th>
+                                <th>Protocol</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (Port port in Results)
+                            {
+                                <tr>
+                                    <td class="font-monospace">@port.Number</td>
+                                    <td>@port.Name</td>
+                                    <td>@port.Protocol</td>
+                                    <td>@port.Description</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
+    private string query = "";
 
+    private List<Port> Results => PortLookup.Search(query);
+    private string? RangeText => GetRangeText();
+
+    private string? GetRangeText()
+    {
+        if (!int.TryParse(query, out int value) || value < 0 || value > 65535)
+            return null;
+
+        string range = PortLookup.GetRange(value);
+
+        string bounds = range switch
+        {
+            "Well-known" => "0-1023",
+            "Registered" => "1024-49151",
+            _ => "49152-65535"
+        };
+
+        return $"{value} is a {range.ToLower()} port ({bounds})";
+    }
 }
