@@ -48,7 +48,7 @@
             };
             foreach (string test in groupDigits_test)
             {
-                Console.WriteLine(BaseQuiz.GroupDigits(test));
+                Console.WriteLine(Converter.GroupDigits(test));
             }
          
 
