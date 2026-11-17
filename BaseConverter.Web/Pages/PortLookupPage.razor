@@ -19,16 +19,11 @@
             </div>
         </div>
 
-        <div class="card mt-3">
-            <div class="card-body p-0">
-                @if (Results.Count == 0)
-                {
-                    <div class="p-4 text-secondary">
-                        @(RangeText != null ? "No known services use this port." : $"No known services match \"{query}\".")
-                    </div>
-                }
-                else
-                {
+        @if (Results.Count > 0)
+        {
+            @* Results found: show the table *@
+            <div class="card mt-3">
+                <div class="card-body p-0">
                     <table class="table table-hover mb-0">
                         <thead>
                             <tr>
@@ -50,9 +45,24 @@
                             }
                         </tbody>
                     </table>
-                }
+                </div>
             </div>
-        </div>
+        }
+        else if (IsValidPort)
+        {
+            @* A valid port, but no known service on it *@
+            <div class="card mt-3">
+                <div class="card-body p-4 text-secondary">No known services use this port.</div>
+            </div>
+        }
+        else if (RangeText == null)
+        {
+            @* Text search with no hits *@
+            <div class="card mt-3">
+                <div class="card-body p-4 text-secondary">No known services match "@query".</div>
+            </div>
+        }
+        @* Invalid number: no card, the range line already explains it *@
     </div>
 </div>
 
@@ -61,13 +71,15 @@
 
     private List<Port> Results => PortLookup.Search(query);
     private string? RangeText => GetRangeText();
+    private bool IsValidPort => long.TryParse(query, out long n) && n >= 0 && n <= 65535;
 
     private string? GetRangeText()
     {
-        if (!int.TryParse(query, out int value) || value < 0 || value > 65535)
-            return null;
+        if (!long.TryParse(query, out long value)) return null;
 
-        string range = PortLookup.GetRange(value);
+        if (value < 0 || value > 65535) return $"{value} is not a valid port (0-65535)";
+
+        string range = PortLookup.GetRange((int)value); // Safe since it's now confirmed between 0 and 65535
 
         string bounds = range switch
         {
