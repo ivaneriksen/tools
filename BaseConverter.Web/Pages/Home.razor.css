@@ -8,3 +8,8 @@
         box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
         border-color: var(--accent);
     }
+
+        .tool-card:hover .icon-ring {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(74, 127, 193, 0.5);
+        }

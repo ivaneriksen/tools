@@ -10,7 +10,7 @@
 .top-row {
     min-height: 3.5rem;
     background-color: transparent;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .navbar-brand {
@@ -38,6 +38,7 @@
     border-radius: 50%;
     font-size: 1rem;
     margin-right: 0.75rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .nav-item {
@@ -67,14 +68,20 @@
             color: #fff;
             box-shadow: inset 3px 0 0 var(--accent);
         }
+
             .nav-item ::deep a.active .bi {
                 border-color: var(--accent);
             }
 
-.nav-item ::deep a:hover {
-    background-color: rgba(255,255,255,0.1);
-    color: white;
-}
+        .nav-item ::deep a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+            .nav-item ::deep a:hover .bi {
+                border-color: var(--accent);
+                box-shadow: 0 0 10px rgba(74, 127, 193, 0.5);
+            }
 
 @media (min-width: 641px) {
     .navbar-toggler {
@@ -91,6 +98,6 @@
         height: calc(100vh - 3.5rem);
         overflow-y: auto;
         display: flex;
-        flex-direction: column
+        flex-direction: column;
     }
 }

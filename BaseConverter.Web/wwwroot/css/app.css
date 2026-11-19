@@ -211,3 +211,16 @@ h1 {
     color: rgba(255, 255, 255, 0.45);
     margin-bottom: 0.75rem;
 }
+
+.icon-ring {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    font-size: 1.25rem;
+    transition: ease-in-out;
+}
